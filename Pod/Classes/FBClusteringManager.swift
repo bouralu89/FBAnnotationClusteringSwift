@@ -24,6 +24,7 @@ public class FBClusteringManager : NSObject {
     var lock:NSRecursiveLock = NSRecursiveLock()
     
     public var maxZoomLevel = 1.0
+    public var zoomLevelToDisplayAnnotations = 0.0
     
     public override init(){
         super.init()
@@ -51,7 +52,26 @@ public class FBClusteringManager : NSObject {
         lock.unlock()
     }
     
-    public func clusteredAnnotationsWithinMapRect(rect:MKMapRect, withZoomScale zoomScale:Double) -> [MKAnnotation]{
+    public func annotationsWithinMapRect(rect:MKMapRect, withZoomScale zoomScale:Double) -> [MKAnnotation] {
+        if zoomScale < zoomLevelToDisplayAnnotations { return [] }
+        
+        var annotations = [MKAnnotation]()
+        
+        lock.lock()
+        
+        let mapBox:FBBoundingBox  = FBQuadTreeNode.FBBoundingBoxForMapRect(rect)
+
+        tree?.enumerateAnnotationsInBox(mapBox){ obj in
+            annotations.append(obj)
+        }
+        
+        lock.unlock()
+        
+        return annotations
+        
+    }
+    
+    public func clusteredAnnotationsWithinMapRect(rect:MKMapRect, withZoomScale zoomScale:Double) -> [MKAnnotation] {
         guard !zoomScale.isInfinite else { return [] }
         
         let cellSize:CGFloat = FBClusteringManager.FBCellSizeForZoomScale(MKZoomScale(zoomScale))
