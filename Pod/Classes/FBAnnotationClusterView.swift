@@ -67,33 +67,28 @@ public class FBAnnotationClusterView : MKAnnotationView {
             
         }
         
-        backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.clear
         setupLabel()
-        setTheCount(count)
-    }
-    
-    required override public init(frame: CGRect) {
-        super.init(frame: frame)
-        
+        setTheCount(localCount: count)
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
     }
     
     func setupLabel(){
         countLabel = UILabel(frame: bounds)
         
         if let countLabel = countLabel {
-            countLabel.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-            countLabel.textAlignment = .Center
-            countLabel.backgroundColor = UIColor.clearColor()
-            countLabel.textColor = UIColor.whiteColor()
+            countLabel.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            countLabel.textAlignment = .center
+            countLabel.backgroundColor = UIColor.clear
+            countLabel.textColor = UIColor.white
             countLabel.adjustsFontSizeToFitWidth = true
             countLabel.minimumScaleFactor = 2
             countLabel.numberOfLines = 1
-            countLabel.font = UIFont.boldSystemFontOfSize(fontSize)
-            countLabel.baselineAdjustment = .AlignCenters
+            countLabel.font = UIFont.boldSystemFont(ofSize: fontSize)
+            countLabel.baselineAdjustment = .alignCenters
             addSubview(countLabel)
         }
         
@@ -110,16 +105,16 @@ public class FBAnnotationClusterView : MKAnnotationView {
         
         // Images are faster than using drawRect:
         
-        let imageAsset = UIImage(named: imageName, inBundle: (!loadExternalImage) ? NSBundle(forClass: FBAnnotationClusterView.self) : nil, compatibleWithTraitCollection: nil)
+        let imageAsset = UIImage(named: imageName, in: (!loadExternalImage) ? Bundle(for: FBAnnotationClusterView.self) : nil, compatibleWith: nil)
         
         //UIImage(named: imageName)!
         
         countLabel?.frame = self.bounds
         image = imageAsset
-        centerOffset = CGPointZero
+        centerOffset = CGPoint(x: 0, y: 0)
         
         // adds a white border around the green circle
-        layer.borderColor = UIColor.whiteColor().CGColor
+        layer.borderColor = UIColor.white.cgColor
         layer.borderWidth = borderWidth
         layer.cornerRadius = self.bounds.size.width / 2
         

@@ -52,10 +52,10 @@ public class FBQuadTreeNode : NSObject {
         let yMid:CGFloat = (box.yf + box.y0) / 2.0
         
         
-        northEast!.boundingBox = FBQuadTreeNode.FBBoundingBoxMake(xMid, y0:box.y0, xf:box.xf, yf:yMid)
-        northWest!.boundingBox = FBQuadTreeNode.FBBoundingBoxMake(box.x0, y0:box.y0, xf:xMid, yf:yMid)
-        southEast!.boundingBox = FBQuadTreeNode.FBBoundingBoxMake(xMid, y0:yMid, xf:box.xf, yf:box.yf)
-        southWest!.boundingBox = FBQuadTreeNode.FBBoundingBoxMake(box.x0, y0:yMid, xf:xMid, yf:box.yf)
+        northEast!.boundingBox = FBQuadTreeNode.FBBoundingBoxMake(x0: xMid, y0:box.y0, xf:box.xf, yf:yMid)
+        northWest!.boundingBox = FBQuadTreeNode.FBBoundingBoxMake(x0: box.x0, y0:box.y0, xf:xMid, yf:yMid)
+        southEast!.boundingBox = FBQuadTreeNode.FBBoundingBoxMake(x0: xMid, y0:yMid, xf:box.xf, yf:box.yf)
+        southWest!.boundingBox = FBQuadTreeNode.FBBoundingBoxMake(x0: box.x0, y0:yMid, xf:xMid, yf:box.yf)
     }
     
     // MARK: - Class functions
@@ -82,7 +82,7 @@ public class FBQuadTreeNode : NSObject {
         let minLon: CLLocationDegrees = topLeft.longitude
         let maxLon: CLLocationDegrees = botRight.longitude
         
-        return FBQuadTreeNode.FBBoundingBoxMake(CGFloat(minLat), y0: CGFloat(minLon), xf: CGFloat(maxLat), yf: CGFloat(maxLon))
+        return FBQuadTreeNode.FBBoundingBoxMake(x0: CGFloat(minLat), y0: CGFloat(minLon), xf: CGFloat(maxLat), yf: CGFloat(maxLon))
     }
     
     class func FBBoundingBoxIntersectsBoundingBox(box1:FBBoundingBox, box2:FBBoundingBox) -> Bool {
