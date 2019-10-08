@@ -73,8 +73,8 @@ public class FBQuadTreeNode : NSObject {
     }
     
     class func FBBoundingBoxForMapRect(mapRect: MKMapRect) -> FBBoundingBox {
-        let topLeft: CLLocationCoordinate2D = MKCoordinateForMapPoint(mapRect.origin)
-        let botRight: CLLocationCoordinate2D = MKCoordinateForMapPoint(MKMapPointMake(MKMapRectGetMaxX(mapRect), MKMapRectGetMaxY(mapRect)))
+        let topLeft: CLLocationCoordinate2D = mapRect.origin.coordinate
+        let botRight: CLLocationCoordinate2D = MKMapPoint(x: mapRect.maxX, y: mapRect.maxY).coordinate
         
         let minLat: CLLocationDegrees = botRight.latitude
         let maxLat: CLLocationDegrees = topLeft.latitude
@@ -90,10 +90,10 @@ public class FBQuadTreeNode : NSObject {
     }
     
     class func FBMapRectForBoundingBox(boundingBox:FBBoundingBox) -> MKMapRect {
-        let topLeft:MKMapPoint  = MKMapPointForCoordinate(CLLocationCoordinate2DMake(CLLocationDegrees(boundingBox.x0), CLLocationDegrees(boundingBox.y0)));
-        let botRight:MKMapPoint  = MKMapPointForCoordinate(CLLocationCoordinate2DMake(CLLocationDegrees(boundingBox.xf), CLLocationDegrees(boundingBox.yf)));
+        let topLeft = MKMapPoint(CLLocationCoordinate2DMake(CLLocationDegrees(boundingBox.x0), CLLocationDegrees(boundingBox.y0)))
+        let botRight = MKMapPoint(CLLocationCoordinate2DMake(CLLocationDegrees(boundingBox.xf), CLLocationDegrees(boundingBox.yf)))
         
-        return MKMapRectMake(topLeft.x, botRight.y, fabs(botRight.x - topLeft.x), fabs(botRight.y - topLeft.y));
+        return MKMapRect(x: topLeft.x, y: botRight.y, width: fabs(botRight.x - topLeft.x), height: fabs(botRight.y - topLeft.y))
     }
     
 }

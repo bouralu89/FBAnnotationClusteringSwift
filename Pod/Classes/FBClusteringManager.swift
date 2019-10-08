@@ -17,7 +17,7 @@ public protocol FBClusteringManagerDelegate {
 
 public class FBClusteringManager : NSObject {
     
-    public var delegate:FBClusteringManagerDelegate? = nil
+    public var delegate: FBClusteringManagerDelegate? = nil
     
     var tree:FBQuadTree? = nil
     
@@ -82,10 +82,10 @@ public class FBClusteringManager : NSObject {
         
         let scaleFactor:Double = zoomScale / Double(cellSize)
         
-        let minX:Int = Int(floor(MKMapRectGetMinX(rect) * scaleFactor))
-        let maxX:Int = Int(floor(MKMapRectGetMaxX(rect) * scaleFactor))
-        let minY:Int = Int(floor(MKMapRectGetMinY(rect) * scaleFactor))
-        let maxY:Int = Int(floor(MKMapRectGetMaxY(rect) * scaleFactor))
+        let minX:Int = Int(floor(rect.minX * scaleFactor))
+        let maxX:Int = Int(floor(rect.maxX * scaleFactor))
+        let minY:Int = Int(floor(rect.minY * scaleFactor))
+        let maxY:Int = Int(floor(rect.maxY * scaleFactor))
         
         var clusteredAnnotations = [MKAnnotation]()
         
@@ -146,7 +146,7 @@ public class FBClusteringManager : NSObject {
         var annotations = [MKAnnotation]()
         
         lock.lock()
-        tree?.enumerateAnnotationsUsingBlock(){ obj in
+        tree?.enumerateAnnotationsUsingBlock { obj in
             annotations.append(obj)
         }
         lock.unlock()
@@ -179,18 +179,18 @@ public class FBClusteringManager : NSObject {
     }
     
     public class func FBZoomScaleToZoomLevel(scale:MKZoomScale) -> Int{
-        let totalTilesAtMaxZoom:Double = MKMapSizeWorld.width / 256.0
-        let zoomLevelAtMaxZoom:Int = Int(log2(totalTilesAtMaxZoom))
+        let totalTilesAtMaxZoom: Double = MKMapSize.world.width / 256.0
+        let zoomLevelAtMaxZoom: Int = Int(log2(totalTilesAtMaxZoom))
         let floorLog2ScaleFloat = floor(log2f(Float(scale))) + 0.5
         guard !floorLog2ScaleFloat.isInfinite else { return floorLog2ScaleFloat.sign == .minus ? 0 : 19 }
-        let sum:Int = zoomLevelAtMaxZoom + Int(floorLog2ScaleFloat)
-        let zoomLevel:Int = max(0, sum)
+        let sum: Int = zoomLevelAtMaxZoom + Int(floorLog2ScaleFloat)
+        let zoomLevel: Int = max(0, sum)
         return zoomLevel;
     }
     
     public class func FBCellSizeForZoomScale(zoomScale:MKZoomScale) -> CGFloat {
         
-        let zoomLevel:Int = FBClusteringManager.FBZoomScaleToZoomLevel(scale: zoomScale)
+        let zoomLevel: Int = FBClusteringManager.FBZoomScaleToZoomLevel(scale: zoomScale)
         
         switch (zoomLevel) {
         case 13:

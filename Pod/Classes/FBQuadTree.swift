@@ -18,7 +18,7 @@ public class FBQuadTree : NSObject {
     override init (){
         super.init()
         
-        rootNode = FBQuadTreeNode(boundingBox:FBQuadTreeNode.FBBoundingBoxForMapRect(mapRect: MKMapRectWorld))
+        rootNode = FBQuadTreeNode(boundingBox:FBQuadTreeNode.FBBoundingBoxForMapRect(mapRect: .world))
         
     }
     
@@ -68,7 +68,7 @@ public class FBQuadTree : NSObject {
     }
     
     func enumerateAnnotationsUsingBlock(callback: (MKAnnotation) -> Void){
-        enumerateAnnotationsInBox(box: FBQuadTreeNode.FBBoundingBoxForMapRect(mapRect: MKMapRectWorld), withNode:rootNode!, callback:callback)
+        enumerateAnnotationsInBox(box: FBQuadTreeNode.FBBoundingBoxForMapRect(mapRect: .world), withNode:rootNode!, callback:callback)
     }
     
     func enumerateAnnotationsInBox(box:FBBoundingBox, withNode node:FBQuadTreeNode, callback: (MKAnnotation) -> Void){
